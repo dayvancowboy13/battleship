@@ -1,0 +1,2 @@
+"build": "webpack --config webpack.prod.js",
+"server": "webpack serve --open --config webpack.dev.js"
