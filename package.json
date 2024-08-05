@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "webpack.common.js",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest",
+    "test coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",
