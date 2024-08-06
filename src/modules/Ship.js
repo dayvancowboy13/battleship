@@ -6,7 +6,7 @@ export default class Ship {
         this.timesHit = 0;
         this.sunk = false;
 
-        return 'Ship created!';
+        // return 'Ship created!';
 
     }
 
