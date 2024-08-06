@@ -22,7 +22,7 @@ export default class Gameboard {
     }
 
     placeShip(
-        shipName, shipOrientation, startCoord
+        shipName, shipOrientation = '-', startCoord
     ) {
 
         // "wrapper" function for the abstracted action of filling in the board array
@@ -49,6 +49,84 @@ export default class Gameboard {
         // 3. Verify that those coordinates are not already occupied
         // 3a. If they are occupied, prevent the new ship from being placed
         // 4. If the coordinates are clear, change their hasShip property to true in boardArray
+
+    }
+
+    checkNoCollision(shipCoords) {
+
+        shipCoords.forEach((pair) => {
+
+            let row = pair[0];
+            let col = pair[1];
+
+            if (this.boardArray[row][col].hasShip === true) return false;
+
+        });
+
+        return true;
+
+    }
+
+    getShipLength(ship) {
+
+        switch (ship) {
+
+            case 'carrier':
+                return this.carrier.length;
+                break;
+            case 'battleship':
+                return this.battleship.length;
+                break;
+            case 'destroyer':
+                return this.destroyer.length;
+                break;
+            case 'submarine':
+                return this.submarine.length;
+                break;
+            case 'patrolBoat':
+                return this.patrolBoat.length;
+                break;
+
+            default:
+                return null;
+                break;
+
+        }
+
+    }
+
+    computeShipCoordinates(
+        shipLength, shipOrientation, startCoord
+    ) {
+
+        // compute which coordinates a ship will occupy
+
+        let row = startCoord[0];
+        let col = startCoord[1];
+
+        if (row + shipLength > 9 ||
+            col + shipLength > 9
+        ) return null;
+
+        let coords = [];
+        if (shipOrientation === '-') {
+
+            for (let i = col; i < col + shipLength; i++) {
+
+                coords.push([row, i]);
+
+            }
+
+        } else if (shipOrientation === '|') {
+
+            for (let i = row; i < row + shipLength; i++) {
+
+                coords.push([i, col]);
+
+            }
+
+        }
+        return coords;
 
     }
 

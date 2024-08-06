@@ -54,13 +54,77 @@ describe('Testing placeShip method functionality', () => {
 
     });
 
-    test('placeShip() takes coordinates, places a ship there', () => {
+    test('placeShip() takes start coord and ship name/type, places a ship there', () => {
 
         expect(gb1.boardArray[0][0].hasShip).toBe(false);
         gb1.placeShip(
-            0, 0, [0, 0]
+            'patrolBoat', 0, [0, 0]
         );
         expect(gb1.boardArray[0][0].hasShip).toBe(true);
+
+    });
+
+    test('getShipLength() returns the expected length given the name', () => {
+
+        expect(gb1.getShipLength('carrier')).toBe(5);
+        expect(gb1.getShipLength('battleship')).toBe(4);
+        expect(gb1.getShipLength('destroyer')).toBe(3);
+        expect(gb1.getShipLength('submarine')).toBe(3);
+        expect(gb1.getShipLength('patrolBoat')).toBe(2);
+        expect(gb1.getShipLength('random')).toBeNull();
+
+    });
+
+    test('computeShipCoordinates() returns coordinates that the ship will occupy', () => {
+
+        expect(gb1.computeShipCoordinates(
+            gb1.getShipLength('carrier'), '-', [0, 0]
+        )).toStrictEqual([
+            [0, 0],
+            [0, 1],
+            [0, 2],
+            [0, 3],
+            [0, 4]
+        ]);
+        expect(gb1.computeShipCoordinates(
+            gb1.getShipLength('battleship'), '-', [0, 0]
+        )).toStrictEqual([
+            [0, 0],
+            [0, 1],
+            [0, 2],
+            [0, 3]
+        ]);
+        expect(gb1.computeShipCoordinates(
+            gb1.getShipLength('patrolBoat'), '-', [0, 0]
+        )).toStrictEqual([[0, 0], [0, 1]]);
+
+        expect(gb1.computeShipCoordinates(
+            gb1.getShipLength('carrier'), '|', [0, 0]
+        )).toStrictEqual([
+            [0, 0],
+            [1, 0],
+            [2, 0],
+            [3, 0],
+            [4, 0]
+        ]);
+        expect(gb1.computeShipCoordinates(
+            gb1.getShipLength('battleship'), '|', [0, 0]
+        )).toStrictEqual([
+            [0, 0],
+            [1, 0],
+            [2, 0],
+            [3, 0]
+        ]);
+        expect(gb1.computeShipCoordinates(
+            gb1.getShipLength('patrolBoat'), '|', [0, 0]
+        )).toStrictEqual([[0, 0], [1, 0]]);
+
+        expect(gb1.computeShipCoordinates(
+            gb1.getShipLength('carrier'), '|', [4, 0]
+        )).not.toBeNull();
+        expect(gb1.computeShipCoordinates(
+            gb1.getShipLength('patrolBoat'), '|', [9, 0]
+        )).toBeNull();
 
     });
 
