@@ -13,6 +13,7 @@ export default class Gameboard {
     constructor() {
 
         this.boardArray = this.#createBoard();
+
         this.carrier = new Ship(5);
         this.battleship = new Ship(4);
         this.destroyer = new Ship(3);
@@ -134,6 +135,27 @@ export default class Gameboard {
         // Takes coords and determines whether a ship has been hit
 
         // 1. Get the object at boardArray[row][col]
+    }
+
+    printBoard() {
+
+        let fullBoard = '';
+
+        for (let i = 0; i < this.boardArray.length; i++) {
+
+            let printString = '';
+            for (let j = 0; j < this.boardArray[i].length; j++) {
+
+                if (this.boardArray[i][j].hasShip === true) printString += 'X';
+                else printString += 'O';
+
+            }
+            fullBoard += printString + '\n';
+
+        }
+
+        console.log(fullBoard);
+
     }
 
     #createBoard() {
