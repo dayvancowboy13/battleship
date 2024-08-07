@@ -55,14 +55,17 @@ export default class Gameboard {
 
     checkNoCollision(shipCoords) {
 
-        shipCoords.forEach((pair) => {
+        // receives the full coordinates which the ship wants to occupy,
+        // and reports whether it will be a valid placement
 
-            let row = pair[0];
-            let col = pair[1];
+        for (let i = 0; i < shipCoords.length; i++) {
+
+            let row = shipCoords[i][0];
+            let col = shipCoords[i][1];
 
             if (this.boardArray[row][col].hasShip === true) return false;
 
-        });
+        }
 
         return true;
 

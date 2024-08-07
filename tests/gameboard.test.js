@@ -128,6 +128,21 @@ describe('Testing placeShip method functionality', () => {
 
     });
 
+    test('checkNoCollisions reports accurate collisions', () => {
+
+        let gb2 = new Gameboard();
+
+        let placeCoords = gb1.computeShipCoordinates(
+            gb1.getShipLength('patrolBoat'), '-', [0, 0]
+        );
+
+        gb2.printBoard();
+        gb2.boardArray[0][0].hasShip = true;
+        gb2.printBoard();
+        expect(gb2.checkNoCollision([[0, 1]])).toBe(true);
+
+    });
+
     test('placeShip() wont place a ship if the coord is already occupied', () => {
 
         let gb2 = new Gameboard();
