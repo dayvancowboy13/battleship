@@ -154,9 +154,63 @@ describe('Testing placeShip method functionality', () => {
 
     });
 
-    test.skip('receiveAttack() method exists', () => {
+});
 
-        expect(gb1.receieveAttack).toBeDefined();
+describe('Testing receiveAttack functionality', () => {
+
+    const gb1 = new Gameboard();
+
+    test('receiveAttack() method exists', () => {
+
+        expect(gb1.receiveAttack).toBeDefined();
+
+    });
+
+    test('receiveAttack behaves as expected', () => {
+
+
+        gb1.placeShip(
+            'patrolBoat', '-', [0, 0]
+        );
+
+        let coords = [0, 0];
+        let coords2 = [0, 1];
+        let coords3 = [9, 9];
+
+
+        // takes a pair of coordinates and:
+        // 1. Determines whether or not the attack hit a ship
+        // 1a. If it did, sends the hit function to the correct ship
+        expect(gb1.receiveAttack(coords)).toBe(true);
+        expect(gb1.patrolBoat.timesHit).toBe(1);
+        gb1.receiveAttack(coords2);
+        expect(gb1.patrolBoat.timesHit).toBe(2);
+        expect(gb1.patrolBoat.isSunk()).toBe(true);
+
+        // 1b. If not, record that the coordinates missed
+        expect(gb1.receiveAttack(coords3)).toBe(false);
+
+        gb1.placeShip(
+            'battleship', '-', [9, 0]
+        );
+
+
+        expect(gb1.receiveAttack([9, 0])).toBe(true);
+        expect(gb1.battleship.timesHit).toBe(1);
+        gb1.receiveAttack([9, 1]);
+        gb1.receiveAttack([9, 2]);
+        gb1.receiveAttack([0, 2]);
+        expect(gb1.boardArray[0][2].isHit).toBe(true);
+        gb1.receiveAttack([5, 5]);
+        gb1.receiveAttack([2, 2]);
+
+        gb1.printBoard();
+
+
+        expect(gb1.battleship.timesHit).toBe(3);
+        expect(gb1.boardArray[2][2].isHit).toBe(true);
+        expect(gb1.boardArray[5][5].isHit).toBe(true);
+        expect(gb1.boardArray[3][3].isHit).toBe(false);
 
     });
 

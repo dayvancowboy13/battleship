@@ -5,6 +5,7 @@ export default class Ship {
         this.length = Length;
         this.timesHit = 0;
         this.sunk = false;
+        this.coordinates = [];
 
         // return 'Ship created!';
 

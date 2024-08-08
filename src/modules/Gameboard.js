@@ -25,18 +25,20 @@ export default class Gameboard {
         // shipOrientation: '|' for vertical or '-' for horizontal
 
         let shipCoords = this.#computeShipCoordinates(
-            this.#getShipLength(shipName), shipOrientation, startCoord
+            this[shipName].length, shipOrientation, startCoord
         );
 
         if (this.#checkNoCollision(shipCoords)) {
 
-            this.#setShipCoords(shipName, shipCoords);
+            // this.#setShipCoords(shipName, shipCoords);
+            this[shipName].coordinates = shipCoords;
 
             shipCoords.forEach((pair) => {
 
                 let row = pair[0];
                 let col = pair[1];
                 this.boardArray[row][col].hasShip = true;
+                this.boardArray[row][col].shipType = shipName;
 
             });
 
@@ -47,76 +49,43 @@ export default class Gameboard {
 
     }
 
-    #checkNoCollision(shipCoords) {
+    receiveAttack(coords) {
+
+        // Takes coords and determines whether a ship has been hit
+
+        if (this.boardArray[coords[0]][coords[1]].isHit === false &&
+            this.boardArray[coords[0]][coords[1]].hasShip === true) {
+
+            // sends hit function to correct ship
+            this.boardArray[coords[0]][coords[1]].isHit = true;
+            let shipHit = this.boardArray[coords[0]][coords[1]].shipType;
+            this[shipHit].hit();
+            return true;
+
+        } else {
+
+            this.boardArray[coords[0]][coords[1]].isHit = true;
+            return false;
+
+        }
+
+    }
+
+    #checkNoCollision(coords) {
 
         // receives the full coordinates which the ship wants to occupy,
         // and reports whether it will be a valid placement
 
-        for (let i = 0; i < shipCoords.length; i++) {
+        for (let i = 0; i < coords.length; i++) {
 
-            let row = shipCoords[i][0];
-            let col = shipCoords[i][1];
+            let row = coords[i][0];
+            let col = coords[i][1];
 
             if (this.boardArray[row][col].hasShip === true) return false;
 
         }
 
         return true;
-
-    }
-
-    #setShipCoords(ship, coords) {
-
-        switch (ship) {
-
-            case 'carrier':
-                this.carrier.coordinates = coords;
-                break;
-            case 'battleship':
-                this.battleship.coordinates = coords;
-                break;
-            case 'destroyer':
-                this.destroyer.coordinates = coords;
-                break;
-            case 'submarine':
-                this.submarine.coordinates = coords;
-                break;
-            case 'patrolBoat':
-                this.patrolBoat.coordinates = coords;
-                break;
-
-            default:
-                return null;
-
-        }
-
-    }
-
-    #getShipLength(ship) {
-
-        switch (ship) {
-
-            case 'carrier':
-                return this.carrier.length;
-                break;
-            case 'battleship':
-                return this.battleship.length;
-                break;
-            case 'destroyer':
-                return this.destroyer.length;
-                break;
-            case 'submarine':
-                return this.submarine.length;
-                break;
-            case 'patrolBoat':
-                return this.patrolBoat.length;
-                break;
-
-            default:
-                return null;
-                break;
-
-        }
 
     }
 
@@ -129,12 +98,10 @@ export default class Gameboard {
         let row = startCoord[0];
         let col = startCoord[1];
 
-        if (row + shipLength > 9 ||
-            col + shipLength > 9
-        ) return null;
-
         let coords = [];
         if (shipOrientation === '-') {
+
+            if (col + shipLength > 9) return null;
 
             for (let i = col; i < col + shipLength; i++) {
 
@@ -143,6 +110,8 @@ export default class Gameboard {
             }
 
         } else if (shipOrientation === '|') {
+
+            if (row + shipLength > 9) return null;
 
             for (let i = row; i < row + shipLength; i++) {
 
@@ -155,12 +124,6 @@ export default class Gameboard {
 
     }
 
-    receieveAttack(coord) {
-        // Takes coords and determines whether a ship has been hit
-
-        // 1. Get the object at boardArray[row][col]
-    }
-
     printBoard() {
 
         let fullBoard = '';
@@ -170,8 +133,16 @@ export default class Gameboard {
             let printString = '';
             for (let j = 0; j < this.boardArray[i].length; j++) {
 
-                if (this.boardArray[i][j].hasShip === true) printString += 'X';
-                else printString += 'O';
+                if (this.boardArray[i][j].hasShip === true &&
+                    this.boardArray[i][j].isHit === false
+                ) printString += '+ ';
+                else if (this.boardArray[i][j].isHit === true &&
+                    this.boardArray[i][j].hasShip === false
+                ) printString += 'x ';
+                else if (this.boardArray[i][j].isHit === true &&
+                    this.boardArray[i][j].hasShip === true
+                ) printString += 'X ';
+                else printString += '- ';
 
             }
             fullBoard += printString + '\n';
@@ -192,7 +163,8 @@ export default class Gameboard {
 
             for (let j = 0; j < this.#boardCols; j++) arr[i].push({
                 hasShip: false,
-                isHit: false
+                isHit: false,
+                shipType: null
             });
 
         }
