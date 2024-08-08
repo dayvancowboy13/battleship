@@ -48,23 +48,13 @@ describe('Testing placeShip method functionality', () => {
 
     });
 
-    test.skip('placeShip() method exists', () => {
+    test('placeShip() method exists', () => {
 
         expect(gb1.placeShip).toBeDefined();
 
     });
 
-    test('placeShip() takes start coord and ship name/type, places a ship there', () => {
-
-        expect(gb1.boardArray[0][0].hasShip).toBe(false);
-        gb1.placeShip(
-            'patrolBoat', 0, [0, 0]
-        );
-        expect(gb1.boardArray[0][0].hasShip).toBe(true);
-
-    });
-
-    test('getShipLength() returns the expected length given the name', () => {
+    test.skip('getShipLength() returns the expected length given the name', () => {
 
         expect(gb1.getShipLength('carrier')).toBe(5);
         expect(gb1.getShipLength('battleship')).toBe(4);
@@ -75,7 +65,7 @@ describe('Testing placeShip method functionality', () => {
 
     });
 
-    test('computeShipCoordinates() returns coordinates that the ship will occupy', () => {
+    test.skip('computeShipCoordinates() returns coordinates that the ship will occupy', () => {
 
         expect(gb1.computeShipCoordinates(
             gb1.getShipLength('carrier'), '-', [0, 0]
@@ -128,37 +118,39 @@ describe('Testing placeShip method functionality', () => {
 
     });
 
-    test('checkNoCollisions reports accurate collisions', () => {
+    test.skip('checkNoCollisions reports accurate collisions', () => {
 
         let gb2 = new Gameboard();
 
-        let placeCoords = gb1.computeShipCoordinates(
-            gb1.getShipLength('patrolBoat'), '-', [0, 0]
-        );
-
         gb2.printBoard();
-        gb2.boardArray[0][0].hasShip = true;
+        gb2.boardArray[0][1].hasShip = true;
         gb2.printBoard();
-        expect(gb2.checkNoCollision([[0, 1]])).toBe(true);
+        expect(gb2.checkNoCollision([[0, 0], [0, 1]])).toBe(false);
 
     });
 
-    test('placeShip() wont place a ship if the coord is already occupied', () => {
+    test('placeShip() places a ship on the board, or does not if any spots are already occupied', () => {
 
         let gb2 = new Gameboard();
 
         expect(gb2.placeShip(
-            0, 0, [0, 0]
+            'patrolBoat', '-', [0, 0]
         )).toBe(true);
         expect(gb2.placeShip(
-            0, 0, [0, 0]
+            'patrolBoat', '-', [0, 0]
         )).toBe(false);
-        // expect(gb1.boardArray[0][0].hasShip).toBe(true);
 
+        // gb2.printBoard();
 
-        // gb1.placeShip([5, 1]);
-        // expect(gb1.boardArray[5][1].hasShip).toBe(true);
-        // console.log(gb1.boardArray);
+        expect(gb2.placeShip(
+            'carrier', '|', [1, 1]
+        )).toBe(true);
+        expect(gb2.placeShip(
+            'carrier', '-', [1, 0]
+        )).toBe(false);
+
+        // gb2.printBoard();
+
 
     });
 

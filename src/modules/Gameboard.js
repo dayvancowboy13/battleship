@@ -1,8 +1,4 @@
 import Ship from './Ship.js';
-// 1x ship size 5
-// 1x ship size 4
-// 2x ship size 3
-// 1x ship size 2
 
 export default class Gameboard {
 
@@ -26,34 +22,32 @@ export default class Gameboard {
         shipName, shipOrientation = '-', startCoord
     ) {
 
-        // "wrapper" function for the abstracted action of filling in the board array
         // shipOrientation: '|' for vertical or '-' for horizontal
 
-        const row = startCoord[0];
-        const col = startCoord[1];
+        let shipCoords = this.#computeShipCoordinates(
+            this.#getShipLength(shipName), shipOrientation, startCoord
+        );
 
-        if (this.boardArray[row][col].hasShip === false) {
+        if (this.#checkNoCollision(shipCoords)) {
 
-            this.boardArray[row][col].hasShip = true;
+            this.#setShipCoords(shipName, shipCoords);
+
+            shipCoords.forEach((pair) => {
+
+                let row = pair[0];
+                let col = pair[1];
+                this.boardArray[row][col].hasShip = true;
+
+            });
+
+
             return true;
 
         } else return false;
 
-        // SPEC: place ships at specific coordinates by calling the ship class
-        // some other code will call the function?
-        // ships are a certain length, so the function needs to take that into account
-        // how the function is called too
-        // will eventually need code to regulate how many of each ship
-
-        // 1. Given a type of ship (determines the length)
-        // 2. Based on its length, orientation, and starting coords, figure out which coordinates it will occupy (separate function?)
-        // 3. Verify that those coordinates are not already occupied
-        // 3a. If they are occupied, prevent the new ship from being placed
-        // 4. If the coordinates are clear, change their hasShip property to true in boardArray
-
     }
 
-    checkNoCollision(shipCoords) {
+    #checkNoCollision(shipCoords) {
 
         // receives the full coordinates which the ship wants to occupy,
         // and reports whether it will be a valid placement
@@ -71,7 +65,34 @@ export default class Gameboard {
 
     }
 
-    getShipLength(ship) {
+    #setShipCoords(ship, coords) {
+
+        switch (ship) {
+
+            case 'carrier':
+                this.carrier.coordinates = coords;
+                break;
+            case 'battleship':
+                this.battleship.coordinates = coords;
+                break;
+            case 'destroyer':
+                this.destroyer.coordinates = coords;
+                break;
+            case 'submarine':
+                this.submarine.coordinates = coords;
+                break;
+            case 'patrolBoat':
+                this.patrolBoat.coordinates = coords;
+                break;
+
+            default:
+                return null;
+
+        }
+
+    }
+
+    #getShipLength(ship) {
 
         switch (ship) {
 
@@ -99,7 +120,7 @@ export default class Gameboard {
 
     }
 
-    computeShipCoordinates(
+    #computeShipCoordinates(
         shipLength, shipOrientation, startCoord
     ) {
 
