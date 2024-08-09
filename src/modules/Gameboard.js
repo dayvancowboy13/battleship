@@ -16,6 +16,26 @@ export default class Gameboard {
         this.submarine = new Ship(3);
         this.patrolBoat = new Ship(2);
 
+        this.shipsArray = [
+            this.patrolBoat,
+            this.submarine,
+            this.destroyer,
+            this.battleship,
+            this.carrier
+        ];
+
+    }
+
+    allShipsSunk() {
+
+        for (let i = 0; i < this.shipsArray.length; i++) {
+
+            if (!this.shipsArray[i].isSunk()) return false;
+
+        }
+
+        return true;
+
     }
 
     placeShip(

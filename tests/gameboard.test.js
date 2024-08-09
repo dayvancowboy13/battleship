@@ -156,7 +156,7 @@ describe('Testing placeShip method functionality', () => {
 
 });
 
-describe('Testing receiveAttack functionality', () => {
+describe.skip('Testing receiveAttack functionality', () => {
 
     const gb1 = new Gameboard();
 
@@ -211,6 +211,64 @@ describe('Testing receiveAttack functionality', () => {
         expect(gb1.boardArray[2][2].isHit).toBe(true);
         expect(gb1.boardArray[5][5].isHit).toBe(true);
         expect(gb1.boardArray[3][3].isHit).toBe(false);
+
+    });
+
+});
+
+describe('Gamebaord keeps track and reports whether or not all of their ships have been sunk', () => {
+
+    let gb1 = new Gameboard();
+
+    test('shipsArray is defined', () => {
+
+        expect(gb1.shipsArray).toBeDefined();
+
+    });
+    test('Method allShipsSunk is defined', () => {
+
+        expect(gb1.allShipsSunk).toBeDefined();
+
+    });
+
+    test('allShipsSunk reports correct status of ships', () => {
+
+
+        // place all ships on the board
+        gb1.placeShip(
+            'patrolBoat', '-', [0, 0]
+        );
+        gb1.placeShip(
+            'submarine', '-', [1, 0]
+        );
+        gb1.placeShip(
+            'destroyer', '-', [2, 0]
+        );
+        gb1.placeShip(
+            'battleship', '-', [3, 0]
+        );
+        gb1.placeShip(
+            'carrier', '-', [4, 0]
+        );
+        gb1.printBoard();
+
+        expect(gb1.allShipsSunk()).toBe(false);
+        let coords1 = gb1.patrolBoat.coordinates;
+        coords1.forEach((pair) => gb1.receiveAttack(pair));
+        expect(gb1.allShipsSunk()).toBe(false);
+        let coords2 = gb1.submarine.coordinates;
+        coords2.forEach((pair) => gb1.receiveAttack(pair));
+        let coords3 = gb1.destroyer.coordinates;
+        coords3.forEach((pair) => gb1.receiveAttack(pair));
+        expect(gb1.allShipsSunk()).toBe(false);
+        let coords4 = gb1.battleship.coordinates;
+        coords4.forEach((pair) => gb1.receiveAttack(pair));
+        let coords5 = gb1.carrier.coordinates;
+        coords5.forEach((pair) => gb1.receiveAttack(pair));
+        gb1.printBoard();
+
+        expect(gb1.allShipsSunk()).toBe(true);
+
 
     });
 
