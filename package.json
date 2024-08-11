@@ -4,7 +4,10 @@
   "main": "webpack.common.js",
   "scripts": {
     "test": "jest",
-    "test coverage": "jest --coverage"
+    "test coverage": "jest --coverage",
+    "start": "webpack --config webpack.dev.js",
+    "server": "webpack serve --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "keywords": [],
   "author": "",

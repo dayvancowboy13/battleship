@@ -1,0 +1,55 @@
+:root {
+    font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+    --dark: #333333;
+    --light: #ffffff;
+    --mid: #e1f4f3;
+    --mid-dark: #706c61;
+
+}
+
+header {
+    color: var(--dark);
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+#play-area {
+    background-color: var(--mid-dark);
+    width: 100%;
+    height: 70vh;
+    padding: 50px;
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px;
+}
+
+.board-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+
+    background-color: var(--mid);
+}
+
+.grid-cell {
+    border: 1px var(--light) solid;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.7rem;
+}
+
+.grid-cell[data-has-ship='true'] {
+    background-color: var(--dark);
+}
+
+[data-is-hit='true']::after {
+    content: "X";
+    color: red;
+}
+
+[data-is-hit='false']::after {
+    content: "-";
+}
