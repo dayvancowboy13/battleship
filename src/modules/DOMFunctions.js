@@ -1,6 +1,5 @@
 import Gameboard from './Gameboard';
 
-// renderBoards();
 export default class DOMFunctions {
 
     static {
@@ -10,18 +9,8 @@ export default class DOMFunctions {
 
         // });
 
-        const btn1 = document.querySelector('#btn1');
-        const btn2 = document.querySelector('#btn2');
-        const div = document.querySelector('#coolguy');
-
-        // this.addDispatchEvent(btn1, btn1.dataset.msg);
-        this.addDispatchEvent(btn2, btn2.dataset.msg);
-        this.addDispatchEvent(div, div.textContent);
-
-
-        document.addEventListener('radical', (e) => console.log(e.detail));
-
-        // btn1.addEventListener('click', () => this.renderBoard('player'));
+        // document.addEventListener('radical', (e) => console.log(e.detail));
+        // this.initListeners();
 
     }
 
@@ -31,8 +20,8 @@ export default class DOMFunctions {
         boardDiv.innerHTML = '';
 
         // hasShip: false,
-        //         isHit: false,
-        //         shipType: null
+        // isHit: false,
+        // shipType: null
 
         // generate grid-cells
         for (let i = 0; i < board.length; i++) {
@@ -52,6 +41,23 @@ export default class DOMFunctions {
             }
 
         }
+
+    }
+
+    static initListeners() {
+
+        document.addEventListener('test-event', (e) => console.log(e.detail));
+        document.addEventListener('keypress', function (e) {
+
+            if (e.key === 's') {
+
+                p1.gameBoard.printBoard();
+                p2.gameBoard.printBoard();
+
+            }
+
+        });
+
 
     }
 

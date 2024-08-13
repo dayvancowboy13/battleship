@@ -9,4 +9,9 @@ export default class Player {
 
     }
 
+    makeRandomMove() {
+        // code for the computer to make a move
+        // might not end up staying in this class
+    }
+
 }
