@@ -68,6 +68,9 @@ function initListeners() {
         // if that square has already been hit, redo it
         console.log('simulating enemy turn');
 
+        // random interval between 1-7 seconds for enemy to delay
+        let enemyTurnDelay = Math.random() * 6000 + 1000;
+        console.log(`Enemy turn delay: ${enemyTurnDelay}`);
         setTimeout(() => {
 
             let randomRow;
@@ -101,7 +104,7 @@ function initListeners() {
 
             }
 
-        }, 1500);
+        }, enemyTurnDelay);
 
 
     });
