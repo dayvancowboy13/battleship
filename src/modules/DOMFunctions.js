@@ -5,12 +5,6 @@ export default class DOMFunctions {
     static {
 
         console.log('DOMFunctions class loaded');
-        // document.addEventListener('DOMContentLoaded', () => {
-
-        // });
-
-        // document.addEventListener('radical', (e) => console.log(e.detail));
-        // this.initListeners();
 
     }
 
@@ -44,33 +38,10 @@ export default class DOMFunctions {
 
     }
 
-    static initListeners() {
+    static changeTurnLabel(text) {
 
-        document.addEventListener('test-event', (e) => console.log(e.detail));
-        document.addEventListener('keypress', function (e) {
-
-            if (e.key === 's') {
-
-                p1.gameBoard.printBoard();
-                p2.gameBoard.printBoard();
-
-            }
-
-        });
-
-
-    }
-
-    static addDispatchEvent(target, detailText) {
-
-        target.addEventListener('click', function () {
-
-            this.dispatchEvent(new CustomEvent('radical', {
-                bubbles: true,
-                detail: detailText
-            }));
-
-        });
+        const turnDiv = document.querySelector('#whose-turn-label');
+        turnDiv.textContent = text;
 
     }
 

@@ -12,6 +12,7 @@ header {
     color: var(--dark);
     font-size: 2.5rem;
     text-align: center;
+    font-weight: bold;
 }
 
 #main-container {
@@ -46,6 +47,12 @@ header {
     font-size: 1.4em;
 }
 
+#whose-turn-label {
+    font-weight: bolder;
+    font-size: 1.5em;
+    padding-bottom: 5%;
+}
+
 .board-container {
     display: grid;
     justify-self: center;
@@ -59,22 +66,20 @@ header {
 }
 
 .grid-cell {
-    /* border: 1px solid; */
     text-align: center;
-    /* padding: 4px; */
     font-size: 2.6em;
     background-color: var(--mid);
 }
 
-.grid-cell[data-has-ship='true'] {
+.grid-cell[data-has-ship='true'][data-owner='player'] {
+    background-color: var(--mid-dark);
+}
+
+.grid-cell[data-has-ship='true'][data-owner='enemy'][data-is-hit='true'] {
     background-color: var(--mid-dark);
 }
 
 [data-is-hit='true']::after {
     content: "×";
     color: red;
-}
-
-[data-is-hit='false']::after {
-    /* content: "-"; */
 }

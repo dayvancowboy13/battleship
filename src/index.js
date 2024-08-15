@@ -48,13 +48,15 @@ function initListeners() {
     document.addEventListener('begin-player-turn', function (e) {
 
         console.log('changing to player turn');
+        DOMFunctions.changeTurnLabel('Your Turn');
         document.addEventListener('click', clickEnemyBoard);
 
     });
 
     document.addEventListener('game-over', function (e) {
 
-        alert(`${e.detail.winner} is the winner!`);
+        if (e.detail.winner === 'player') DOMFunctions.changeTurnLabel('You Win!');
+        else DOMFunctions.changeTurnLabel('You Lose!');
 
 
     });
@@ -62,6 +64,7 @@ function initListeners() {
     document.addEventListener('begin-enemy-turn', function (e) {
 
         console.log('changing to enemy turn');
+        DOMFunctions.changeTurnLabel('Enemy\'s Turn');
         document.removeEventListener('click', clickEnemyBoard);
         // enemy move:
         // get two random numbers from 0-9
@@ -138,24 +141,31 @@ function clickEnemyBoard(e) {
         let y = +e.target.dataset.col;
 
         console.log(`${x} ${y}`);
-        p2.gameBoard.receiveAttack([x, y]);
-        DOMFunctions.renderBoard('enemy', p2.gameBoard.boardArray);
+        if (!p2.gameBoard.boardArray[x][y].isHit) {
 
-        if (p2.gameBoard.allShipsSunk()) {
+            p2.gameBoard.receiveAttack([x, y]);
 
-            this.dispatchEvent(new CustomEvent('game-over', {
+            DOMFunctions.renderBoard('enemy', p2.gameBoard.boardArray);
+
+
+            if (p2.gameBoard.allShipsSunk()) {
+
+                console.log('all enemy ships sunk!');
+                this.dispatchEvent(new CustomEvent('game-over', {
+                    bubbles: true,
+                    detail: { winner: 'player' }
+                }));
+
+            }
+
+            // console.log('still reachable?');
+
+            this.dispatchEvent(new CustomEvent('begin-enemy-turn', {
                 bubbles: true,
-                detail: { winner: 'Player 1' }
+                detail: 'game not over'
             }));
 
         }
-
-        // console.log('still reachable?');
-
-        this.dispatchEvent(new CustomEvent('begin-enemy-turn', {
-            bubbles: true,
-            detail: 'game not over'
-        }));
 
     }
 
