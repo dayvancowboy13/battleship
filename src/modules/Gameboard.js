@@ -48,6 +48,8 @@ export default class Gameboard {
             this[shipName].length, shipOrientation, startCoord
         );
 
+        if (shipCoords === null) return false;
+
         if (this.#checkNoCollision(shipCoords)) {
 
             // this.#setShipCoords(shipName, shipCoords);
@@ -66,6 +68,38 @@ export default class Gameboard {
             return true;
 
         } else return false;
+
+    }
+
+    placeShipsRandomly() {
+
+        const shipNames = [
+            'carrier',
+            'battleship',
+            'destroyer',
+            'submarine',
+            'patrolBoat'
+        ];
+        shipNames.forEach((ship) => {
+
+            let orientation;
+            let randomRow;
+            let randomCol;
+
+            do {
+
+                if (Math.random() > 0.5) orientation = '|';
+                else orientation = '-';
+
+                randomRow = Math.floor(Math.random() * 10);
+                randomCol = Math.floor(Math.random() * 10);
+
+            } while (!this.placeShip(
+                ship, orientation, [randomRow, randomCol]
+            ));
+
+        });
+
 
     }
 

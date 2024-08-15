@@ -28,8 +28,13 @@ const shipNames = [
     'patrolBoat'
 ];
 
-setPlayerBoards(p1);
-setPlayerBoards(p2);
+console.log(`Random setting Player's ships`);
+p1.gameBoard.placeShipsRandomly();
+console.log(`Random setting Computer's ships`);
+p2.gameBoard.placeShipsRandomly();
+
+// setPlayerBoards(p1);
+// setPlayerBoards(p2);
 
 DOMFunctions.renderBoard('player', p1.gameBoard.boardArray);
 DOMFunctions.renderBoard('enemy', p2.gameBoard.boardArray);
@@ -63,6 +68,9 @@ function initListeners() {
     });
 
 }
+
+// function placeShipsRandomly()
+// get 5 random coordinates
 
 function gameOver(e) {
 
