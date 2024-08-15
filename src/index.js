@@ -69,9 +69,6 @@ function initListeners() {
 
 }
 
-// function placeShipsRandomly()
-// get 5 random coordinates
-
 function gameOver(e) {
 
     console.log('game-over event caught, ending game');
@@ -103,8 +100,7 @@ function enemyTurn() {
     console.log('simulating enemy turn');
 
     // random interval between 1-7 seconds for enemy to delay
-    // let enemyTurnDelay = Math.random() * 6000 + 1000;
-    let enemyTurnDelay = 100;
+    let enemyTurnDelay = Math.random() * 6000 + 1000;
     console.log(`Enemy turn delay: ${enemyTurnDelay}`);
     setTimeout(() => {
 
