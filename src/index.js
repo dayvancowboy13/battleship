@@ -45,80 +45,11 @@ document.dispatchEvent(new CustomEvent('begin-player-turn', {
 function initListeners() {
 
 
-    document.addEventListener('begin-player-turn', function (e) {
+    document.addEventListener('begin-player-turn', playerTurn);
 
-        console.log('changing to player turn');
-        DOMFunctions.changeTurnLabel('Your Turn');
-        document.addEventListener('click', clickEnemyBoard);
+    document.addEventListener('game-over', gameOver);
 
-    });
-
-    document.addEventListener('game-over', function (e) {
-
-        if (e.detail.winner === 'player') DOMFunctions.changeTurnLabel('You Win!');
-        else DOMFunctions.changeTurnLabel('You Lose!');
-
-
-    });
-
-    document.addEventListener('begin-enemy-turn', function (e) {
-
-        console.log('changing to enemy turn');
-        DOMFunctions.changeTurnLabel('Enemy\'s Turn');
-        document.removeEventListener('click', clickEnemyBoard);
-        // enemy move:
-        // get two random numbers from 0-9
-        // if that square has already been hit, redo it
-        console.log('simulating enemy turn');
-
-        // random interval between 1-7 seconds for enemy to delay
-        let enemyTurnDelay = Math.random() * 6000 + 1000;
-        console.log(`Enemy turn delay: ${enemyTurnDelay}`);
-        setTimeout(() => {
-
-            let randomRow;
-            let randomCol;
-            do {
-
-                randomRow = Math.floor(Math.random() * 10);
-                randomCol = Math.floor(Math.random() * 10);
-
-                console.log(`row: ${randomRow}; col: ${randomCol}`);
-
-            } while (p1.gameBoard.boardArray[randomRow][randomCol].isHit);
-
-            p1.gameBoard.receiveAttack([randomRow, randomCol]);
-
-            DOMFunctions.renderBoard('player', p1.gameBoard.boardArray);
-
-            if (p1.gameBoard.allShipsSunk()) {
-
-                this.dispatchEvent(new CustomEvent('game-over', {
-                    bubbles: true,
-                    detail: { winner: 'Computer Player' }
-                }));
-
-            } else {
-
-                this.dispatchEvent(new CustomEvent('begin-player-turn', {
-                    bubbles: true,
-                    detail: 'game not over'
-                }));
-
-            }
-
-        }, enemyTurnDelay);
-
-
-    });
-
-    document.addEventListener('end-enemy-turn', function (e) {
-
-        console.log('changing to player turn');
-        document.addEventListener('click', clickEnemyBoard);
-
-
-    });
+    document.addEventListener('begin-enemy-turn', enemyTurn);
 
     document.addEventListener('keypress', (e) => {
 
@@ -130,6 +61,77 @@ function initListeners() {
         }
 
     });
+
+}
+
+function gameOver(e) {
+
+    console.log('game-over event caught, ending game');
+    alert(`Game Over! ${e.detail.winner} wins!`);
+    if (e.detail.winner === 'player') DOMFunctions.changeTurnLabel('You Win!');
+    else DOMFunctions.changeTurnLabel('You Lose!');
+    document.removeEventListener('click', clickEnemyBoard);
+    document.removeEventListener('begin-player-turn', playerTurn);
+    document.removeEventListener('begin-enemy-turn', enemyTurn);
+
+}
+
+function playerTurn() {
+
+    console.log('changing to player turn');
+    DOMFunctions.changeTurnLabel('Your Turn');
+    document.addEventListener('click', clickEnemyBoard);
+
+}
+
+function enemyTurn() {
+
+    console.log('changing to enemy turn');
+    DOMFunctions.changeTurnLabel('Enemy\'s Turn');
+    document.removeEventListener('click', clickEnemyBoard);
+    // enemy move:
+    // get two random numbers from 0-9
+    // if that square has already been hit, redo it
+    console.log('simulating enemy turn');
+
+    // random interval between 1-7 seconds for enemy to delay
+    // let enemyTurnDelay = Math.random() * 6000 + 1000;
+    let enemyTurnDelay = 100;
+    console.log(`Enemy turn delay: ${enemyTurnDelay}`);
+    setTimeout(() => {
+
+        let randomRow;
+        let randomCol;
+        do {
+
+            randomRow = Math.floor(Math.random() * 10);
+            randomCol = Math.floor(Math.random() * 10);
+
+            console.log(`row: ${randomRow}; col: ${randomCol}`);
+
+        } while (p1.gameBoard.boardArray[randomRow][randomCol].isHit);
+
+        p1.gameBoard.receiveAttack([randomRow, randomCol]);
+
+        DOMFunctions.renderBoard('player', p1.gameBoard.boardArray);
+
+        if (p1.gameBoard.allShipsSunk()) {
+
+            this.dispatchEvent(new CustomEvent('game-over', {
+                bubbles: true,
+                detail: { winner: 'Computer Player' }
+            }));
+
+        } else {
+
+            this.dispatchEvent(new CustomEvent('begin-player-turn', {
+                bubbles: true,
+                detail: 'game not over'
+            }));
+
+        }
+
+    }, enemyTurnDelay);
 
 }
 
