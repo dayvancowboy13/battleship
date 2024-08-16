@@ -125,6 +125,13 @@ export default class Gameboard {
 
     }
 
+    checkShipSunk(coords) {
+
+        let shipHit = this.boardArray[coords[0]][coords[1]].shipType;
+        return this[shipHit].isSunk();
+
+    }
+
     #checkNoCollision(coords) {
 
         // receives the full coordinates which the ship wants to occupy,

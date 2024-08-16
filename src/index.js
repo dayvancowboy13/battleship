@@ -100,7 +100,7 @@ function enemyTurn() {
     console.log('simulating enemy turn');
 
     // random interval between 1-7 seconds for enemy to delay
-    let enemyTurnDelay = Math.random() * 6000 + 1000;
+    let enemyTurnDelay = Math.random() * 3000 + 1000;
     console.log(`Enemy turn delay: ${enemyTurnDelay}`);
     setTimeout(() => {
 
@@ -149,7 +149,11 @@ function clickEnemyBoard(e) {
         console.log(`${x} ${y}`);
         if (!p2.gameBoard.boardArray[x][y].isHit) {
 
-            p2.gameBoard.receiveAttack([x, y]);
+            if (p2.gameBoard.receiveAttack([x, y])) {
+
+                if (p2.gameBoard.checkShipSunk([x, y])) alert('You sunk my Battleship!');
+
+            }
 
             DOMFunctions.renderBoard('enemy', p2.gameBoard.boardArray);
 
