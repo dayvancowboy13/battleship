@@ -66,6 +66,8 @@ header {
 }
 
 .grid-cell {
+    display: flex;
+    justify-content: center;
     text-align: center;
     font-size: 2.6em;
     background-color: var(--mid);
@@ -82,4 +84,5 @@ header {
 [data-is-hit='true']::after {
     content: "×";
     color: red;
+    align-self: center;
 }
